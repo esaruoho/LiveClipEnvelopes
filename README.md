@@ -191,6 +191,22 @@ Accessibility API itself — only the `live-envelope` child process it spawns
 does — and macOS attributes that permission check to the panel as the
 "responsible process."
 
+## Support
+
+If you find this tool useful:
+- [Ko-Fi](https://ko-fi.com/esaruoho)
+- [BuyMeACoffee](https://buymeacoffee.com/esaruoho)
+- [PayPal](https://www.paypal.me/esaruoho)
+- [GitHub Sponsors](https://github.com/sponsors/esaruoho)
+- [Patreon](http://patreon.com/esaruoho)
+- [Bandcamp](http://lackluster.bandcamp.com/)
+
+## Credits
+
+Created by Lackluster (esaruoho)
+
+Built on top of [AbletonOSC](https://github.com/ideoforms/AbletonOSC) by Daniel Jones.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
