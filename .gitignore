@@ -2,3 +2,5 @@
 *.o
 shortcuts/unsigned/
 *.zip
+gumroad/.rendered.html
+gumroad/.preview.png
