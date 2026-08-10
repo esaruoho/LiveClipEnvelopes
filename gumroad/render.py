@@ -12,8 +12,9 @@ Supported markdown (deliberately a small subset -- this is a sales page, not a
 document): # / ## headings, paragraphs, - bullet lists, **bold**, *italic*,
 [text](url), `code`, --- rule, and two extras:
 
-    ![alt](panel)   image by IMAGES key below (Gumroad-hosted, see the rule file)
-    [[BUY]]         the checkout button (data-gumroad-action="buy")
+    ![alt](panel)          image by IMAGES key below (Gumroad-hosted, see rule file)
+    [[BUY]]                the checkout button (data-gumroad-action="buy")
+    [[VIDEO:<id-or-url>]]  a YouTube embed, 16:9 and responsive
 
 No external dependencies -- stdlib only, so it runs anywhere.
 """
@@ -80,7 +81,29 @@ body main, body #main, body > div, .product-page, .responsive-container {{
   text-decoration: none; margin: 0 0 1em;
 }}
 .lce .byline {{ color: {DIM}; font-size: .95rem; }}
+/* 16:9 responsive video box -- the iframe has no intrinsic aspect ratio, so
+   without this it either overflows narrow screens or letterboxes on wide ones. */
+.lce .video {{
+  position: relative; width: 100%; padding-bottom: 56.25%;
+  height: 0; margin: 0 0 1.8em; border-radius: 8px; overflow: hidden;
+  background: #000;
+}}
+.lce .video iframe {{
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}}
 </style>"""
+
+
+def youtube_id(value: str) -> str:
+    """Accepts a bare id, a watch?v= URL, a youtu.be link, or an /embed/ URL."""
+    value = value.strip()
+    for pattern in (r"[?&]v=([A-Za-z0-9_-]{6,})",
+                    r"youtu\.be/([A-Za-z0-9_-]{6,})",
+                    r"/embed/([A-Za-z0-9_-]{6,})"):
+        found = re.search(pattern, value)
+        if found:
+            return found.group(1)
+    return value
 
 
 def inline(text: str) -> str:
@@ -121,6 +144,20 @@ def render(md: str) -> str:
             i += 1
             continue
 
+        # [[VIDEO:...]] -> YouTube embed. Gumroad's sanitizer keeps <iframe> and
+        # adds sandbox="allow-scripts" itself; it strips only `frameborder`, so
+        # that attribute is deliberately not emitted.
+        video = re.match(r"^\[\[VIDEO:(.+)\]\]$", line.strip())
+        if video:
+            vid = youtube_id(video.group(1))
+            out.append(
+                f'<div class="video"><iframe src="https://www.youtube.com/embed/{html.escape(vid)}" '
+                f'title="LiveClipEnvelopes demo" allowfullscreen '
+                f'allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"></iframe></div>'
+            )
+            i += 1
+            continue
+
         image = re.match(r"^!\[([^\]]*)\]\(([^)]+)\)$", line.strip())
         if image:
             alt, key = image.group(1), image.group(2).strip()
@@ -158,7 +195,8 @@ def render(md: str) -> str:
         para = []
         while i < len(lines):
             nxt = lines[i].rstrip()
-            if not nxt or nxt.startswith(("# ", "## ", "- ", "---", "![")) or nxt.strip() == "[[BUY]]":
+            if (not nxt or nxt.startswith(("# ", "## ", "- ", "---", "![", "[[VIDEO:"))
+                    or nxt.strip() == "[[BUY]]"):
                 break
             para.append(nxt)
             i += 1
