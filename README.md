@@ -1,8 +1,12 @@
+<img src="docs/icon.png" width="96" align="right" alt="">
+
 # LiveClipEnvelopes
 
 Restores Ableton Live 8's "quick chooser" workflow for a clip's Gain,
 Transposition, and Sample Offset envelopes — as keyboard shortcuts, a floating
 button panel, Keyboard Maestro macros, or Apple Shortcuts. macOS only.
+
+![The Live Envelopes panel](docs/panel.png)
 
 Live 12 has no exposed API for selecting which clip envelope is displayed (see
 [How it works](#how-it-works)), so this drives Live's actual UI through the
@@ -190,6 +194,17 @@ This matters specifically for the panel app because it never calls an
 Accessibility API itself — only the `live-envelope` child process it spawns
 does — and macOS attributes that permission check to the panel as the
 "responsible process."
+
+## Prebuilt download
+
+The source here is complete and MIT-licensed — `./install.sh` builds everything
+from scratch for free. If you'd rather skip the build, a prebuilt, code-signed
+bundle (app + CLI + all macros and Shortcuts + install notes, one zip) is on
+Gumroad for €10, which also funds the work:
+
+**https://lackluster.gumroad.com/l/liveclipenvelopes**
+
+Build it yourself or buy it — both are fine.
 
 ## Support
 
