@@ -25,6 +25,8 @@ transposition value via [AbletonOSC](https://github.com/ideoforms/AbletonOSC).
 | `keyboard-maestro/` | One `.kmmacros` file with all 15 commands, no triggers assigned. |
 | `shortcuts/signed/` | The same 15 commands as importable Apple Shortcuts. |
 | `scripts/generate-automations.py` | Regenerates the two above from one command list. |
+| `package.sh` | Builds the distributable zip (app + CLI + patch + macros + Shortcuts). |
+| `gumroad/` | The store page: copy in `page.md`, `./gumroad/deploy.sh` renders and publishes it. |
 
 ## Install
 
