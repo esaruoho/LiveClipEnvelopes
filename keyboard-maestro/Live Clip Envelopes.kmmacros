@@ -10,7 +10,7 @@
 		<key>AddToStatusMenu</key>
 		<false/>
 		<key>CreationDate</key>
-		<real>808001596.09761</real>
+		<real>808148550.464799</real>
 		<key>DisplayToggle</key>
 		<false/>
 		<key>IsActive</key>
@@ -38,7 +38,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope gain</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" exact Gain
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -50,15 +54,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Gain</string>
+				<string>Live Clip: Show Gain</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>D0B06A2E-8E44-4C5A-9D9A-B1A1F136B3F6</string>
+				<string>864116DD-F87B-49FA-BEE8-E3F2D05F6F25</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -79,7 +83,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope sample offset</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" exact Transposition
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -91,15 +99,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Sample Offset</string>
+				<string>Live Clip: Show Transposition</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>F4414706-9EA5-4780-BE69-DE3A5DC14251</string>
+				<string>410FDD74-B284-4340-9CAA-22FD790932F2</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -120,7 +128,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope next</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" exact Sample Offset
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -132,15 +144,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Next Envelope</string>
+				<string>Live Clip: Show Sample Offset</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>9B15B377-8F46-419B-BC78-039D468F9F2C</string>
+				<string>B7916A90-BAAB-44D0-B1F4-C5C9F8DEE90D</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -161,7 +173,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope prev</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" gain
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -173,15 +189,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Prev Envelope</string>
+				<string>Live Clip: Gain (toggle)</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>C909BBAF-E65E-4CB1-BF60-64C24A79721E</string>
+				<string>AB49A5E0-1443-4973-961F-F17E95BC241E</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -202,7 +218,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope toggle-link</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" sample offset
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -214,15 +234,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Toggle Link</string>
+				<string>Live Clip: Sample Offset (toggle)</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>7FFD3237-D41C-47CC-9311-4EDFBBD96F8F</string>
+				<string>46DDC057-B621-4299-9921-C1929B67D0FE</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -243,7 +263,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope open</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" next
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -255,15 +279,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip: Open Envelope Menu</string>
+				<string>Live Clip: Next Envelope</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>E4A4543D-9E69-438C-9682-D97FC613EF26</string>
+				<string>DC7EFF94-F3EF-435D-A99A-B25BCAC398AA</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -284,7 +308,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-neg48</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" prev
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -296,15 +324,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: -48</string>
+				<string>Live Clip: Prev Envelope</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>240E609E-B252-4D19-9DED-009D41F1351F</string>
+				<string>92C167A3-C44A-4BC2-B71D-976A476DE031</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -325,7 +353,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-neg36</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" toggle-link
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -337,15 +369,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: -36</string>
+				<string>Live Clip: Toggle Link</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>586FF7D9-26CD-4466-9DCD-9FF9E86A949F</string>
+				<string>53876E52-549C-4F2F-B74B-5480D9CB01C6</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -366,7 +398,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-neg24</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" open
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -378,15 +414,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: -24</string>
+				<string>Live Clip: Open Envelope Menu</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>2DBBE34A-0A43-4727-961A-ECD7DB05BD87</string>
+				<string>DDC5C5EB-7F5B-4F31-BE58-D4241A92C62B</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -407,7 +443,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-down-12</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg48
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -419,15 +459,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: -12</string>
+				<string>Live Clip Transpose: -48</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>BA483216-E966-4F17-B356-6611FCC45898</string>
+				<string>B1E9063F-033C-4C6D-9516-A1C74A048F80</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -448,7 +488,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-0</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg36
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -460,15 +504,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: 0</string>
+				<string>Live Clip Transpose: -36</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>73E828A9-E0CA-4534-8408-000DB487382D</string>
+				<string>ACE5D4AB-99F0-4C71-A097-1475772AA068</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -489,7 +533,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-up-12</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg24
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -501,15 +549,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: +12</string>
+				<string>Live Clip Transpose: -24</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>56408B58-B698-4982-8F0A-C7750EF0B424</string>
+				<string>72DC3127-257A-4DE4-842A-00A7541F03F1</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -530,7 +578,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-24</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-down-12
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -542,15 +594,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: +24</string>
+				<string>Live Clip Transpose: -12</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>BAEA8D8D-27A2-43E8-AD49-E92AF82E9A27</string>
+				<string>C38464AE-DD75-4EA3-8A75-B12BC36569C8</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -571,7 +623,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-36</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-0
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -583,15 +639,15 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>Name</key>
-				<string>Live Clip Transpose: +36</string>
+				<string>Live Clip Transpose: 0</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>C5C55624-523F-440C-BC96-C938D12C0CD5</string>
+				<string>729DB410-FEBB-4AC9-B103-F599DA0A32E2</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -612,7 +668,11 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>/usr/local/bin/live-envelope transpose-set-48</string>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-up-12
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -624,15 +684,150 @@
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
 				<key>ModificationDate</key>
-				<real>808001596.09761</real>
+				<real>808148550.464799</real>
+				<key>Name</key>
+				<string>Live Clip Transpose: +12</string>
+				<key>Triggers</key>
+				<array/>
+				<key>UID</key>
+				<string>39D61A65-5547-40E7-9300-7EBAC4449BD0</string>
+			</dict>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>ActionUID</key>
+						<integer>9015</integer>
+						<key>DisplayKind</key>
+						<string>None</string>
+						<key>HonourFailureSettings</key>
+						<true/>
+						<key>IncludeStdErr</key>
+						<false/>
+						<key>MacroActionType</key>
+						<string>ExecuteShellScript</string>
+						<key>Path</key>
+						<string></string>
+						<key>Source</key>
+						<string>Nothing</string>
+						<key>Text</key>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-24
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>TrimResults</key>
+						<true/>
+						<key>TrimResultsNew</key>
+						<true/>
+						<key>UseText</key>
+						<true/>
+					</dict>
+				</array>
+				<key>CreationDate</key>
+				<real>808148550.464799</real>
+				<key>ModificationDate</key>
+				<real>808148550.464799</real>
+				<key>Name</key>
+				<string>Live Clip Transpose: +24</string>
+				<key>Triggers</key>
+				<array/>
+				<key>UID</key>
+				<string>D34EFFC6-5284-450B-8B2D-999EB68315CE</string>
+			</dict>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>ActionUID</key>
+						<integer>9016</integer>
+						<key>DisplayKind</key>
+						<string>None</string>
+						<key>HonourFailureSettings</key>
+						<true/>
+						<key>IncludeStdErr</key>
+						<false/>
+						<key>MacroActionType</key>
+						<string>ExecuteShellScript</string>
+						<key>Path</key>
+						<string></string>
+						<key>Source</key>
+						<string>Nothing</string>
+						<key>Text</key>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-36
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>TrimResults</key>
+						<true/>
+						<key>TrimResultsNew</key>
+						<true/>
+						<key>UseText</key>
+						<true/>
+					</dict>
+				</array>
+				<key>CreationDate</key>
+				<real>808148550.464799</real>
+				<key>ModificationDate</key>
+				<real>808148550.464799</real>
+				<key>Name</key>
+				<string>Live Clip Transpose: +36</string>
+				<key>Triggers</key>
+				<array/>
+				<key>UID</key>
+				<string>804F4C00-F31B-467D-B245-471455C8BC94</string>
+			</dict>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>ActionUID</key>
+						<integer>9017</integer>
+						<key>DisplayKind</key>
+						<string>None</string>
+						<key>HonourFailureSettings</key>
+						<true/>
+						<key>IncludeStdErr</key>
+						<false/>
+						<key>MacroActionType</key>
+						<string>ExecuteShellScript</string>
+						<key>Path</key>
+						<string></string>
+						<key>Source</key>
+						<string>Nothing</string>
+						<key>Text</key>
+						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
+  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-48
+done
+osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
+exit 1</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>TrimResults</key>
+						<true/>
+						<key>TrimResultsNew</key>
+						<true/>
+						<key>UseText</key>
+						<true/>
+					</dict>
+				</array>
+				<key>CreationDate</key>
+				<real>808148550.464799</real>
+				<key>ModificationDate</key>
+				<real>808148550.464799</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: +48</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>4666E78A-CBEF-4CEC-8EBA-5C7048B771AE</string>
+				<string>020C7BDA-4CA6-44DD-8F54-931E8D05363D</string>
 			</dict>
 		</array>
 		<key>Modifiers</key>
@@ -640,9 +835,9 @@
 		<key>Name</key>
 		<string>Live Clip Envelopes</string>
 		<key>ToggleMacroUID</key>
-		<string>BC74C6EB-BB8A-4549-A4B3-3A1974B38A7C</string>
+		<string>A9FC19A9-2529-4141-A8AE-050FDD863B24</string>
 		<key>UID</key>
-		<string>30757201-A497-4861-B7F8-9597297B0DCC</string>
+		<string>BA75CB6D-C87D-4882-8CF9-1E373C28AF60</string>
 	</dict>
 </array>
 </plist>

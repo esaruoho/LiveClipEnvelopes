@@ -19,12 +19,42 @@ import subprocess
 import uuid
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-BIN_PLACEHOLDER = "/usr/local/bin/live-envelope"
+
+
+def script_for(args: str) -> str:
+    """
+    The shell body for one command.
+
+    Deliberately does NOT hardcode a single path. `install.sh` puts the binary in
+    /usr/local/bin, but a Homebrew-style prefix or a dev checkout are both normal,
+    and a macro that points at one absent path fails *silently* — these actions run
+    with DisplayKind None, so nothing surfaces. So: try the known locations, and if
+    none exists, raise a real macOS notification instead of dying quietly.
+    """
+    return (
+        'for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" '
+        '"$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do\n'
+        f'  [ -x "$p" ] && exec "$p" {args}\n'
+        'done\n'
+        "osascript -e 'display notification \"live-envelope not found — run install.sh\" "
+        "with title \"LiveClipEnvelopes\"' >/dev/null 2>&1\n"
+        'exit 1'
+    )
+
 
 # (Shortcut/macro display name, live-envelope arguments)
 COMMANDS = [
-    ("Live Clip: Gain",                 "gain"),
-    ("Live Clip: Sample Offset",        "sample offset"),
+    #--------------------------------------------------------------------------------
+    # Direct selects. These always land on the named envelope and stay there, which
+    # is what you want on a dedicated key. The toggles below are for the two-button
+    # mouse workflow, where one button has to reach more than one envelope.
+    #--------------------------------------------------------------------------------
+    ("Live Clip: Show Gain",            "exact Gain"),
+    ("Live Clip: Show Transposition",   "exact Transposition"),
+    ("Live Clip: Show Sample Offset",   "exact Sample Offset"),
+    # Toggles
+    ("Live Clip: Gain (toggle)",        "gain"),
+    ("Live Clip: Sample Offset (toggle)", "sample offset"),
     ("Live Clip: Next Envelope",        "next"),
     ("Live Clip: Prev Envelope",        "prev"),
     ("Live Clip: Toggle Link",          "toggle-link"),
@@ -53,7 +83,7 @@ def build_kmmacros():
             "MacroActionType": "ExecuteShellScript",
             "Path": "",
             "Source": "Nothing",
-            "Text": "%s %s" % (BIN_PLACEHOLDER, command),
+            "Text": script_for(command),
             "TimeOutAbortsMacro": True,
             "TrimResults": True,
             "TrimResultsNew": True,
@@ -96,7 +126,7 @@ def make_wflow(name, args):
         "WFWorkflowActions": [{
             "WFWorkflowActionIdentifier": "is.workflow.actions.runshellscript",
             "WFWorkflowActionParameters": {
-                "Script": f"{BIN_PLACEHOLDER} {args}",
+                "Script": script_for(args),
                 "Shell": "/bin/zsh",
                 "Input": "",
                 "WFShellScriptInputPassthrough": False,
