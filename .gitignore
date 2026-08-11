@@ -4,3 +4,5 @@ shortcuts/unsigned/
 *.zip
 gumroad/.rendered.html
 gumroad/.preview.png
+__pycache__/
+*.pyc
