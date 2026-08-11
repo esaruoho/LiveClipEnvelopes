@@ -16,7 +16,8 @@ time. This puts it back on a single keypress.
 - **Warp-mode aware.** Sample Offset only exists in Beats Warp Mode, so outside Beats the same button goes to Transposition instead of landing on a greyed-out entry that does nothing.
 - **A floating panel.** Always-on-top, stays put across Spaces, nine octave-transpose buttons (−48 … +48) plus Prev / Gain / Transpose / Sample Offset / Next.
 - **Works without stealing focus.** Live doesn't need to be the frontmost app, so it fires from anywhere.
-- **Your choice of trigger.** Keyboard Maestro macros (15, ready to import), Apple Shortcuts (15, signed), the panel app, or the CLI directly.
+- **Direct or toggling, your call.** Dedicated keys for Show Gain / Show Transposition / Show Sample Offset that land and stay, plus toggle versions for when one button has to reach two envelopes.
+- **Your choice of trigger.** Keyboard Maestro macros (18, ready to import), Apple Shortcuts (18, signed), the panel app, or the CLI directly.
 - **Link/Unlink** the displayed envelope, and pop the chooser menu open under your pointer.
 
 ## Requirements

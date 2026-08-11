@@ -10,7 +10,7 @@
 		<key>AddToStatusMenu</key>
 		<false/>
 		<key>CreationDate</key>
-		<real>808148550.464799</real>
+		<real>808162249.774183</real>
 		<key>DisplayToggle</key>
 		<false/>
 		<key>IsActive</key>
@@ -54,15 +54,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Show Gain</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>864116DD-F87B-49FA-BEE8-E3F2D05F6F25</string>
+				<string>F7C7E322-C876-4D2F-B07A-86767DCD093E</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -99,15 +99,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Show Transposition</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>410FDD74-B284-4340-9CAA-22FD790932F2</string>
+				<string>67893EF6-F4CC-48EA-9720-B8D9042DAF47</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -144,15 +144,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Show Sample Offset</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>B7916A90-BAAB-44D0-B1F4-C5C9F8DEE90D</string>
+				<string>2C4B3A59-CFE4-48E8-8030-CB05E694CB87</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -189,15 +189,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Gain (toggle)</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>AB49A5E0-1443-4973-961F-F17E95BC241E</string>
+				<string>AF495C55-91AF-4725-999C-4D6A1DEC4A72</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -234,15 +234,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Sample Offset (toggle)</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>46DDC057-B621-4299-9921-C1929B67D0FE</string>
+				<string>F030ABD4-0422-4AF6-AEB9-BCF5BA7BDF67</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -279,15 +279,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Next Envelope</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>DC7EFF94-F3EF-435D-A99A-B25BCAC398AA</string>
+				<string>81D272FC-6554-4D4D-9641-30B3C97750DA</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -324,15 +324,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Prev Envelope</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>92C167A3-C44A-4BC2-B71D-976A476DE031</string>
+				<string>5782F002-6FB5-4E31-A822-DE7D6C1A22CD</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -369,15 +369,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Toggle Link</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>53876E52-549C-4F2F-B74B-5480D9CB01C6</string>
+				<string>84BB2F10-BF66-4C87-906D-1E0786FFD0C9</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -414,15 +414,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip: Open Envelope Menu</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>DDC5C5EB-7F5B-4F31-BE58-D4241A92C62B</string>
+				<string>4F5493FC-7C98-4A22-8545-060213A359DC</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -459,15 +459,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: -48</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>B1E9063F-033C-4C6D-9516-A1C74A048F80</string>
+				<string>27903B69-2BBB-4A95-AF8B-2FD94E1C5D15</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -504,15 +504,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: -36</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>ACE5D4AB-99F0-4C71-A097-1475772AA068</string>
+				<string>311C9433-99C2-47F6-8B2F-7695D9888917</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -549,15 +549,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: -24</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>72DC3127-257A-4DE4-842A-00A7541F03F1</string>
+				<string>39923E40-32D5-49DD-9B5D-4B3B5794E368</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -594,15 +594,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: -12</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>C38464AE-DD75-4EA3-8A75-B12BC36569C8</string>
+				<string>833EB715-585A-4F5E-AC19-A2556860CA30</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -639,15 +639,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: 0</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>729DB410-FEBB-4AC9-B103-F599DA0A32E2</string>
+				<string>E91DB319-AF2E-4E5E-B536-B8E039B8C8D6</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -684,15 +684,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: +12</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>39D61A65-5547-40E7-9300-7EBAC4449BD0</string>
+				<string>82EC679E-9448-4589-883E-67DBB0ED3072</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -729,15 +729,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: +24</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>D34EFFC6-5284-450B-8B2D-999EB68315CE</string>
+				<string>59F12F29-1FB1-48A8-A26F-FAC94CE32F12</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -774,15 +774,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: +36</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>804F4C00-F31B-467D-B245-471455C8BC94</string>
+				<string>8271C201-B52D-4146-AE29-98D7F649B2C9</string>
 			</dict>
 			<dict>
 				<key>Actions</key>
@@ -819,15 +819,15 @@ exit 1</string>
 					</dict>
 				</array>
 				<key>CreationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>ModificationDate</key>
-				<real>808148550.464799</real>
+				<real>808162249.774183</real>
 				<key>Name</key>
 				<string>Live Clip Transpose: +48</string>
 				<key>Triggers</key>
 				<array/>
 				<key>UID</key>
-				<string>020C7BDA-4CA6-44DD-8F54-931E8D05363D</string>
+				<string>B7BD450A-3554-46AD-A5DB-FD1F5F945A96</string>
 			</dict>
 		</array>
 		<key>Modifiers</key>
@@ -835,9 +835,9 @@ exit 1</string>
 		<key>Name</key>
 		<string>Live Clip Envelopes</string>
 		<key>ToggleMacroUID</key>
-		<string>A9FC19A9-2529-4141-A8AE-050FDD863B24</string>
+		<string>54D70FCB-5DF4-4334-8802-79D8A368C19D</string>
 		<key>UID</key>
-		<string>BA75CB6D-C87D-4882-8CF9-1E373C28AF60</string>
+		<string>AA079E17-9CAD-48BB-A104-B2EF90663866</string>
 	</dict>
 </array>
 </plist>
