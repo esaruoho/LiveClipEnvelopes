@@ -18,14 +18,17 @@ cd "$(dirname "$0")"
 #--------------------------------------------------------------------------------
 APP_ONLY=0
 WITH_CLI=0
+WITH_ARROWS=0
 for arg in "$@"; do
     case "$arg" in
         --app-only) APP_ONLY=1 ;;
         --with-cli) WITH_CLI=1 ;;
+        --with-arrows) WITH_ARROWS=1 ;;
         -h|--help)
             sed -n '2,8p' "$0"
             echo "  --app-only   rebuild+sign the app only"
-            echo "  --with-cli   ALSO put live-envelope on your PATH, for use in a terminal"
+            echo "  --with-cli    ALSO put live-envelope on your PATH, for use in a terminal"
+            echo "  --with-arrows build the optional hover-gated arrow-key daemon (see bin/live-arrows)"
             exit 0 ;;
         *) echo "unknown option: $arg" >&2; exit 2 ;;
     esac
@@ -61,6 +64,17 @@ if [ "$WITH_CLI" -eq 1 ] && [ "$APP_ONLY" -eq 0 ]; then
         chmod 755 "$CLI_DEST"
         echo "    also installed to $CLI_DEST"
     fi
+fi
+
+#--------------------------------------------------------------------------------
+# Optional extra, not part of the shipped app: a CGEventTap daemon that gives the
+# Envelopes chooser hover-gated arrow keys inside Live. It needs its own Accessibility
+# grant and runs as a background process, so it is opt-in and lives next to its source.
+#--------------------------------------------------------------------------------
+if [ "$WITH_ARROWS" -eq 1 ]; then
+    echo "==> Building live-envelope-arrows (optional)"
+    swiftc -O -o bin/live-envelope-arrows bin/live-envelope-arrows.swift
+    echo "    built bin/live-envelope-arrows — start it with: bin/live-arrows start"
 fi
 
 echo "==> Building Live Envelopes.app"

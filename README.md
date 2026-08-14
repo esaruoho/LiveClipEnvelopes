@@ -166,6 +166,21 @@ works.
 would be unsigned and unnotarized too, so it would be blocked by the very check it exists to
 get past. The quarantine command above is the only fix that needs no privileged app.
 
+## Optional: hover-gated arrow keys
+
+`bin/live-envelope-arrows.swift` is a separate CGEventTap daemon (not part of the app). Hover Live's
+Envelopes chooser and **← →** cycle the envelope while **↑ ↓** walk the transposition ladder; hover
+anything else and the arrow keys are passed through untouched, so Live behaves normally.
+
+```sh
+./install.sh --with-arrows     # builds bin/live-envelope-arrows
+bin/live-arrows start          # stop | status | log | restart | build
+```
+
+It needs its own Accessibility grant, runs as a background process, and shells out to the same
+`live-envelope` the app uses (app bundle first). If it dies or is killed, macOS drops the tap and
+arrow keys behave normally again — there is no state to clean up.
+
 ## AbletonOSC setup
 
 Live Clip Envelopes works by driving Live's own interface through macOS Accessibility, so

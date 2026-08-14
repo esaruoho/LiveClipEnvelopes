@@ -9,3 +9,6 @@ gumroad/.preview.png
 __pycache__/
 *.pyc
 keyboard-maestro/local/
+
+# built by install.sh --with-arrows (source is bin/live-envelope-arrows.swift)
+bin/live-envelope-arrows
