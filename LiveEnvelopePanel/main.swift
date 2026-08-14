@@ -146,6 +146,21 @@ func runLiveEnvelopeSync(_ args: [String], timeout: TimeInterval = 4.0) -> Strin
         .components(separatedBy: "\n").first ?? ""
 }
 
+/// Like runLiveEnvelopeSync but returns every line, for commands that report structure.
+func runLiveEnvelopeSyncFull(_ args: [String], timeout: TimeInterval = 8.0) -> String {
+    guard let binary = liveEnvelopeBinary() else { return "live-envelope not found" }
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: binary)
+    process.arguments = args
+    let pipe = Pipe()
+    process.standardOutput = pipe
+    process.standardError = pipe
+    do { try process.run() } catch { return "could not run live-envelope" }
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    process.waitUntilExit()
+    return (String(data: data, encoding: .utf8) ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
 func runLiveEnvelope(_ args: [String], completion: @escaping (String, Bool) -> Void) {
     guard let binary = liveEnvelopeBinary() else {
         DispatchQueue.main.async {
@@ -178,6 +193,130 @@ let DEFAULT_TITLE = "Live Clip Envelopes"
 
 /// US-layout virtual key codes for the arrow keys.
 let KEY_LEFT = 123, KEY_RIGHT = 124, KEY_DOWN = 125, KEY_UP = 126
+
+//--------------------------------------------------------------------------------
+// The pointer. `live-envelope abletonosc guide` opens Live's Settings on the right tab
+// and prints the target control's screen rectangle; this parks a small floating window
+// beside it saying what to do. Telling someone "Settings ▸ Tempo & MIDI ▸ Control
+// Surface" and leaving them to find it is exactly the dead end this avoids.
+//
+// Movable by dragging anywhere on it, always on top, non-activating so it never steals
+// focus from Live, and it dismisses itself once the probe starts answering.
+//--------------------------------------------------------------------------------
+final class HintWindow {
+    private let panel: NSPanel
+    private var watchdog: Timer?
+    private static var current: HintWindow?
+
+    /// AX reports a top-left origin; AppKit windows use bottom-left. Flip against the
+    /// screen that actually contains the point, not just the main one.
+    private static func appKitPoint(axRect: CGRect) -> (NSPoint, NSScreen) {
+        let screen = NSScreen.screens.first { $0.frame.contains(
+            CGPoint(x: axRect.midX, y: NSScreen.screens[0].frame.maxY - axRect.midY)) }
+            ?? NSScreen.screens[0]
+        let flippedY = NSScreen.screens[0].frame.maxY - axRect.maxY
+        return (NSPoint(x: axRect.maxX + 12, y: flippedY - 6), screen)
+    }
+
+    static func show(near axRect: CGRect, message: String, alreadyCorrect: Bool) {
+        current?.close()
+        current = HintWindow(near: axRect, message: message, alreadyCorrect: alreadyCorrect)
+    }
+
+    static func dismiss() { current?.close(); current = nil }
+
+    private init(near axRect: CGRect, message: String, alreadyCorrect: Bool) {
+        panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 290, height: 74),
+                        styleMask: [.nonactivatingPanel, .borderless],
+                        backing: .buffered, defer: false)
+        panel.isFloatingPanel = true
+        panel.level = .statusBar          // above Live's Settings window
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.isMovableByWindowBackground = true
+        panel.hidesOnDeactivate = false
+        panel.isReleasedWhenClosed = false
+        panel.backgroundColor = .clear
+        panel.hasShadow = true
+
+        let box = NSView()
+        box.wantsLayer = true
+        box.layer?.backgroundColor = (alreadyCorrect
+            ? NSColor.systemGreen : NSColor.systemYellow).withAlphaComponent(0.97).cgColor
+        box.layer?.cornerRadius = 8
+
+        // Points back at the control the window is parked beside.
+        let arrow = NSTextField(labelWithString: "◀")
+        arrow.font = .boldSystemFont(ofSize: 20)
+        arrow.textColor = .black
+
+        let label = NSTextField(wrappingLabelWithString: message)
+        label.font = .boldSystemFont(ofSize: 12)
+        label.textColor = .black
+        label.preferredMaxLayoutWidth = 200
+
+        let done = NSButton(title: alreadyCorrect ? "OK" : "Done", target: self,
+                            action: #selector(dismissPressed))
+        done.bezelStyle = .rounded
+        done.font = .systemFont(ofSize: 11)
+
+        let row = NSStackView(views: [arrow, label, done])
+        row.orientation = .horizontal
+        row.spacing = 8
+        row.alignment = .centerY
+        row.edgeInsets = NSEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+        row.translatesAutoresizingMaskIntoConstraints = false
+        box.addSubview(row)
+        NSLayoutConstraint.activate([
+            row.leadingAnchor.constraint(equalTo: box.leadingAnchor),
+            row.trailingAnchor.constraint(equalTo: box.trailingAnchor),
+            row.topAnchor.constraint(equalTo: box.topAnchor),
+            row.bottomAnchor.constraint(equalTo: box.bottomAnchor),
+        ])
+        panel.contentView = box
+        row.layoutSubtreeIfNeeded()
+        panel.setContentSize(NSSize(width: 290, height: row.fittingSize.height))
+
+        var (origin, screen) = HintWindow.appKitPoint(axRect: axRect)
+        // Keep it on screen: if it would hang off the right edge, sit to the left instead.
+        if origin.x + panel.frame.width > screen.frame.maxX {
+            origin.x = axRect.minX - panel.frame.width - 12
+        }
+        origin.x = max(origin.x, screen.frame.minX + 4)
+        origin.y = min(max(origin.y, screen.frame.minY + 4), screen.frame.maxY - panel.frame.height - 4)
+        panel.setFrameOrigin(origin)
+        panel.orderFrontRegardless()
+
+        if !alreadyCorrect {
+            // Disappear on its own the moment the setting takes effect.
+            //--------------------------------------------------------------------------------
+            // 3s, off the main thread, and it stops after two minutes. Polling faster than
+            // a probe takes just queues probes up, and polling forever leaves a process
+            // spawning every few seconds for the rest of the session.
+            //--------------------------------------------------------------------------------
+            let started = Date()
+            watchdog = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { [weak self] timer in
+                if Date().timeIntervalSince(started) > 120 { timer.invalidate(); return }
+                DispatchQueue.global(qos: .utility).async {
+                    let answered = runLiveEnvelopeSync(["abletonosc", "probe"], timeout: 3.0)
+                        .hasPrefix("responding")
+                    guard answered else { return }
+                    DispatchQueue.main.async {
+                        self?.close()
+                        HintWindow.current = nil
+                    }
+                }
+            }
+        }
+    }
+
+    @objc private func dismissPressed() { close(); HintWindow.current = nil }
+
+    private func close() {
+        watchdog?.invalidate()
+        watchdog = nil
+        panel.orderOut(nil)
+    }
+}
 
 final class PanelController: NSObject, NSWindowDelegate {
     let panel: NSPanel
@@ -426,11 +565,7 @@ final class PanelController: NSObject, NSWindowDelegate {
         alert.beginSheetModal(for: panel) { [weak self] response in
             switch response {
             case .alertSecondButtonReturn:
-                //--------------------------------------------------------------------------------
-                // Opens Live's Settings on the Tempo & MIDI tab and names the slot to change,
-                // without touching the configuration -- the user makes the change.
-                //--------------------------------------------------------------------------------
-                self?.perform(["abletonosc", "guide"])
+                self?.guideToControlSurface()
             case .alertThirdButtonReturn:
                 self?.perform(["abletonosc", "enable"])
             default:
@@ -442,6 +577,39 @@ final class PanelController: NSObject, NSWindowDelegate {
     }
 
     @objc private func setupPressed() { showSetupReport() }
+
+    /// Runs the guide, then parks the pointer beside the control it reported.
+    func guideToControlSurface() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let output = runLiveEnvelopeSyncFull(["abletonosc", "guide"], timeout: 12.0)
+            var rect: CGRect?
+            var slot = "", already = false, message = ""
+            for line in output.components(separatedBy: "\n") {
+                let parts = line.split(separator: " ").map(String.init)
+                if parts.first == "frame", parts.count == 5,
+                   let x = Double(parts[1]), let y = Double(parts[2]),
+                   let w = Double(parts[3]), let h = Double(parts[4]) {
+                    rect = CGRect(x: x, y: y, width: w, height: h)
+                } else if parts.first == "slot", parts.count >= 2 {
+                    slot = parts[1]
+                } else if line.hasPrefix("already set:") {
+                    already = true
+                    message = "Remote Script \(slot) is already set to AbletonOSC ✓"
+                } else if line.hasPrefix("set ") {
+                    message = "Click this and choose AbletonOSC  (slot \(slot))"
+                }
+            }
+            DispatchQueue.main.async {
+                guard let rect = rect else {
+                    self.showProblem(output.components(separatedBy: "\n").first ?? "could not open Live's Settings")
+                    return
+                }
+                HintWindow.show(near: rect,
+                                message: message.isEmpty ? "Set this to AbletonOSC" : message,
+                                alreadyCorrect: already)
+            }
+        }
+    }
 
     //--------------------------------------------------------------------------------
     // Problem row. The window title truncates at the panel's fixed width, so a message

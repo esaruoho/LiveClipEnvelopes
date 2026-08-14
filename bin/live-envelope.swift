@@ -280,9 +280,26 @@ if command.isEmpty || command == "-h" || command == "--help" {
 // so only one instance is allowed at a time. Without this, a Set that makes lookups
 // slow turns a burst of presses into a pile of stuck processes.
 //--------------------------------------------------------------------------------
-let lock = open("/tmp/live-envelope.lock", O_CREAT | O_RDWR, 0o644)
-if lock < 0 || flock(lock, LOCK_EX | LOCK_NB) != 0 {
-    exit(0)
+//--------------------------------------------------------------------------------
+// Read-only commands do not take the lock. They change nothing, so serialising them
+// only creates contention -- and a polling caller (the panel's pointer watchdog) would
+// otherwise hold the lock for the length of every probe and make unrelated commands
+// silently do nothing.
+//--------------------------------------------------------------------------------
+let readOnlyCommands: Set<String> = [
+    "status", "list", "abletonosc probe", "abletonosc-probe",
+]
+if !readOnlyCommands.contains(command) {
+    let lock = open("/tmp/live-envelope.lock", O_CREAT | O_RDWR, 0o644)
+    if lock < 0 || flock(lock, LOCK_EX | LOCK_NB) != 0 {
+        //--------------------------------------------------------------------------------
+        // Say so on stderr. Exiting 0 in silence is right for a key held down, but it
+        // made every collision look like a broken command with no way to tell.
+        //--------------------------------------------------------------------------------
+        FileHandle.standardError.write(
+            "live-envelope: another instance is already running; skipped\n".data(using: .utf8)!)
+        exit(0)
+    }
 }
 
 guard AXIsProcessTrusted() else {
@@ -410,7 +427,7 @@ func remoteSlots(in window: AXUIElement) -> [RemoteSlot] {
 /// Round-trips /live/test and waits briefly for a reply on 11001. This is the only
 /// check that proves AbletonOSC is actually loaded AND listening, and unlike reading
 /// the Settings popups it disturbs nothing on screen.
-func abletonOSCResponds(timeout: TimeInterval = 1.0) -> Bool? {
+func abletonOSCResponds(timeout: TimeInterval = 0.6) -> Bool? {
     let socketDescriptor = socket(AF_INET, SOCK_DGRAM, 0)
     guard socketDescriptor >= 0 else { return nil }
     defer { close(socketDescriptor) }
@@ -438,6 +455,13 @@ func abletonOSCResponds(timeout: TimeInterval = 1.0) -> Bool? {
     return received > 0
 }
 
+/// Prints the control's screen rectangle as "frame x y w h", so a caller can park a
+/// pointer next to it. AX coordinates are top-left origin.
+func emitFrame(_ element: AXUIElement) {
+    guard let box = frame(element) else { return }
+    print("frame \(Int(box.minX)) \(Int(box.minY)) \(Int(box.width)) \(Int(box.height))")
+}
+
 func reportSlots(_ slots: [RemoteSlot]) {
     for slot in slots where !slot.value.isEmpty {
         let marker = slot.value == "AbletonOSC" ? " <- AbletonOSC is here" : ""
@@ -457,11 +481,12 @@ case "abletonosc probe", "abletonosc-probe":
 case "abletonosc guide", "abletonosc-guide", "abletonosc enable", "abletonosc-enable":
     let shouldEnable = command.contains("enable")
     //--------------------------------------------------------------------------------
-    // If it already answers, there is nothing to guide anyone to -- say so and leave
-    // the screen alone rather than throwing Settings in their face.
+    // "enable" may short-circuit when it already answers -- there is nothing to change.
+    // "guide" must NOT: being asked to show where something is and silently doing
+    // nothing looks broken, whether or not it is already set.
     //--------------------------------------------------------------------------------
-    if abletonOSCResponds() == true {
-        print("already enabled and responding -- nothing to do")
+    if shouldEnable, abletonOSCResponds() == true {
+        print("already enabled and responding -- nothing to change")
         exit(0)
     }
     live.activate()
@@ -476,7 +501,9 @@ case "abletonosc guide", "abletonosc-guide", "abletonosc enable", "abletonosc-en
     }
 
     if let existing = slots.first(where: { $0.value == "AbletonOSC" }) {
-        print("already enabled in Remote Script \(existing.number)")
+        print("slot \(existing.number) AbletonOSC")
+        emitFrame(existing.popup)
+        print("already set: Remote Script \(existing.number) is AbletonOSC")
         reportSlots(slots)
         exit(0)
     }
@@ -491,6 +518,8 @@ case "abletonosc guide", "abletonosc-guide", "abletonosc enable", "abletonosc-en
         // Guide, not do: Settings is open on the right tab with the slot identified, and
         // the user makes the change. Deliberately does not touch their configuration.
         //--------------------------------------------------------------------------------
+        print("slot \(free.number) \(free.value)")
+        emitFrame(free.popup)
         print("set \"Control Surface\" slot \(free.number) to AbletonOSC")
         reportSlots(slots)
         exit(0)
