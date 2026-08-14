@@ -975,8 +975,9 @@ final class InfoWindows {
         let icon = NSImageView(image: NSApp.applicationIconImage)
         icon.imageScaling = .scaleProportionallyUpOrDown
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.widthAnchor.constraint(equalToConstant: 84).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 84).isActive = true
+        // 64pt is what Apple's standard About panel uses; 84 read as oversized.
+        icon.widthAnchor.constraint(equalToConstant: 64).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 64).isActive = true
 
         let name = NSTextField(labelWithString: "Live Clip Envelopes")
         name.font = .boldSystemFont(ofSize: 19)
