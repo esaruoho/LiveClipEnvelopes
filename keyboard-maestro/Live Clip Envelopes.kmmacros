@@ -38,11 +38,14 @@
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" exact Gain
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" exact Gain</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -83,11 +86,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" exact Transposition
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" exact Transposition</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -128,11 +134,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" exact Sample Offset
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" exact Sample Offset</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -173,11 +182,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" gain
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" gain</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -218,11 +230,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" sample offset
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" sample offset</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -263,11 +278,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" next
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" next</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -308,11 +326,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" prev
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" prev</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -353,11 +374,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" toggle-link
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" toggle-link</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -398,11 +422,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" open
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" open</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -443,11 +470,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg48
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-neg48</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -488,11 +518,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg36
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-neg36</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -533,11 +566,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-neg24
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-neg24</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -578,11 +614,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-down-12
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-down-12</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -623,11 +662,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-0
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-0</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -668,11 +710,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-up-12
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-up-12</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -713,11 +758,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-24
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-24</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -758,11 +806,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-36
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-36</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>
@@ -803,11 +854,14 @@ exit 1</string>
 						<key>Source</key>
 						<string>Nothing</string>
 						<key>Text</key>
-						<string>for p in "/usr/local/bin/live-envelope" "/opt/homebrew/bin/live-envelope" "$HOME/.local/bin/live-envelope" "$HOME/work/apple/bin/live-envelope"; do
-  [ -x "$p" ] &amp;&amp; exec "$p" transpose-set-48
-done
-osascript -e 'display notification "live-envelope not found — run install.sh" with title "LiveClipEnvelopes"' &gt;/dev/null 2&gt;&amp;1
-exit 1</string>
+						<string># Runs the live-envelope CLI that ships inside Live Envelopes.app — the single copy.
+APP="/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || APP="$HOME/Applications/Live Envelopes.app/Contents/MacOS/live-envelope"
+[ -x "$APP" ] || {
+  osascript -e 'display notification "Live Envelopes.app not found — put it in /Applications" with title "Live Clip Envelopes"' &gt;/dev/null 2&gt;&amp;1
+  exit 1
+}
+exec "$APP" transpose-set-48</string>
 						<key>TimeOutAbortsMacro</key>
 						<true/>
 						<key>TrimResults</key>

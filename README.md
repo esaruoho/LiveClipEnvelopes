@@ -136,6 +136,123 @@ implementation shape the code:
 - Pressing a chooser **toggles** its menu open/closed rather than just opening
   it — press again to close.
 
+## First launch on someone else's Mac
+
+The app is signed with a certificate but **not notarized by Apple** (notarization requires
+the $99/year Apple Developer Program), so macOS blocks it once on any machine it wasn't built
+on. `spctl -a` reports `rejected`, which is expected for a non-notarized build.
+
+**One line fixes it permanently.** Move the app to `/Applications`, then:
+
+```sh
+xattr -dr com.apple.quarantine "/Applications/Live Envelopes.app"
+```
+
+macOS attaches a `com.apple.quarantine` attribute to anything a browser downloads, and
+Gatekeeper only blocks attributed files. Removing it from this one bundle makes the app open
+on a normal double-click, changes no system setting, and affects nothing else. `-r` matters:
+the embedded `live-envelope` binary carries the attribute too.
+
+**Without Terminal**, on macOS 15 (Sequoia) and later:
+
+1. Double-click the app; macOS refuses with *"Apple could not verify…"*. Click **Done**.
+2. **System Settings ▸ Privacy & Security**, scroll to **Security**: *"Live Envelopes.app was
+   blocked to protect your Mac"* ▸ **Open Anyway** ▸ authenticate ▸ **Open**.
+
+Apple removed the Control-click ▸ Open bypass in macOS 15; on macOS 14 and earlier it still
+works.
+
+**Why not just ship a helper app that opens the right Settings pane?** Because that helper
+would be unsigned and unnotarized too, so it would be blocked by the very check it exists to
+get past. The quarantine command above is the only fix that needs no privileged app.
+
+## AbletonOSC setup
+
+Live Clip Envelopes works by driving Live's own interface through macOS Accessibility, so
+**switching between Gain / Transposition / Sample Offset needs nothing but the app itself.**
+AbletonOSC is needed for exactly two things:
+
+- the **transposition buttons** (`-48 … +48`, and the ↑/↓ arrow keys), which write the
+  clip's real transposition value; and
+- **revealing the Envelopes box** automatically when it is hidden, because that tab is not
+  exposed to Accessibility.
+
+Without AbletonOSC the app still switches envelopes — as long as the Envelopes box is
+already open — and the transpose buttons do nothing. The app tells you which state you are
+in: **⋯ ▸ Check Setup…**
+
+### 1. Download AbletonOSC
+
+<https://github.com/ideoforms/AbletonOSC> → **Code ▸ Download ZIP**, or:
+
+```sh
+git clone https://github.com/ideoforms/AbletonOSC
+```
+
+### 2. Put it where Live looks for Remote Scripts
+
+The folder must be named `AbletonOSC` and sit here (create `Remote Scripts` if missing):
+
+```
+~/Music/Ableton/User Library/Remote Scripts/AbletonOSC
+```
+
+```sh
+mkdir -p ~/Music/Ableton/"User Library"/"Remote Scripts"
+mv ~/Downloads/AbletonOSC-master ~/Music/Ableton/"User Library"/"Remote Scripts"/AbletonOSC
+```
+
+That location is shared by every installed Live version, so this is done once.
+
+### 3. Apply the patch that adds the four endpoints
+
+This project needs four endpoints that upstream AbletonOSC does not have yet. The release
+zip ships a ready-made `view.py`; copy it over the one in AbletonOSC:
+
+```sh
+cp abletonosc-patch/view.py \
+   ~/Music/Ableton/"User Library"/"Remote Scripts"/AbletonOSC/abletonosc/view.py
+```
+
+Or, inside a git clone of AbletonOSC:
+
+```sh
+git apply /path/to/abletonosc-patch/clip-envelope-endpoints.patch
+```
+
+The endpoints added are `/live/view/show_clip_envelope`, `/live/view/hide_clip_envelope`,
+`/live/view/nudge_clip_transposition` and `/live/view/set_clip_transposition`.
+
+### 4. Turn it on in Live
+
+**Live ▸ Settings ▸ Link, Tempo & MIDI ▸ Control Surface**, pick **AbletonOSC**. Input and
+Output can stay `None` — it listens on UDP, not MIDI.
+
+### 5. Restart Live
+
+Live loads Remote Scripts at launch, so a restart is required after installing or patching.
+
+### 6. Check it worked
+
+In Live Clip Envelopes: **⋯ ▸ Check Setup…** — AbletonOSC should show a ✓. Live's own log
+also records it:
+
+```
+info: Python: INFO:abletonosc: Started AbletonOSC on address ('0.0.0.0', 11000)
+```
+
+found at `~/Library/Preferences/Ableton/Live <version>/Log.txt`.
+
+### If it does not work
+
+- **Only one Live at a time.** AbletonOSC binds UDP port 11000; a second Live cannot, and
+  the second one silently gets no OSC at all.
+- **Re-check the folder name.** It must be exactly `AbletonOSC`, containing an `abletonosc`
+  subfolder — not `AbletonOSC-master`.
+- **Patch went to the wrong copy.** If you have several AbletonOSC folders, the one that
+  matters is the one under `User Library/Remote Scripts`. **⋯ ▸ Check Setup…** prints the
+  exact path it inspected.
+
 ## AbletonOSC endpoints
 
 Three small additions, none touching envelope content:

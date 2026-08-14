@@ -1,8 +1,11 @@
 .DS_Store
 *.o
-shortcuts/unsigned/
+# shortcuts/unsigned/ IS tracked: the .wflow files are the editable source that
+# tools/set-launcher.py rewrites, and shortcuts/signed/*.shortcut is built FROM them.
+# Ignoring the source while tracking the output is how they nearly got lost.
 *.zip
 gumroad/.rendered.html
 gumroad/.preview.png
 __pycache__/
 *.pyc
+keyboard-maestro/local/
