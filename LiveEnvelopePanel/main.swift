@@ -920,6 +920,138 @@ let HELP_URL = "https://github.com/esaruoho/LiveClipEnvelopes"
 let STORE_URL = "https://lackluster.gumroad.com/l/liveclipenvelopes"
 let CONTACT_EMAIL = "esaruoho@gmail.com"
 
+//--------------------------------------------------------------------------------
+// About and Help windows.
+//
+// NSApp.orderFrontStandardAboutPanel puts the credits in a small fixed scrolling box
+// that cannot be resized, so most of the text was hidden behind a scrollbar. These are
+// plain windows sized to their content instead.
+//
+// Help reads the README shipped INSIDE the bundle rather than opening GitHub: the app
+// should document itself without needing a browser or a working connection.
+//--------------------------------------------------------------------------------
+final class InfoWindows {
+    private static var about: NSWindow?
+    private static var help: NSWindow?
+
+    private static func linkedText(_ body: NSAttributedString, width: CGFloat) -> NSTextView {
+        let view = NSTextView()
+        view.isEditable = false
+        view.isSelectable = true
+        view.drawsBackground = false
+        view.textColor = .labelColor
+        view.textContainerInset = .zero
+        view.textContainer?.lineFragmentPadding = 0
+        view.textContainer?.containerSize = NSSize(width: width, height: .greatestFiniteMagnitude)
+        view.textContainer?.widthTracksTextView = true
+        view.linkTextAttributes = [
+            .foregroundColor: NSColor.linkColor,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .cursor: NSCursor.pointingHand,
+        ]
+        view.textStorage?.setAttributedString(body)
+        return view
+    }
+
+    /// Height the text actually needs, so the window can be built around it instead of
+    /// clipping it.
+    private static func fittedHeight(_ view: NSTextView, width: CGFloat) -> CGFloat {
+        view.frame = NSRect(x: 0, y: 0, width: width, height: 10_000)
+        guard let manager = view.layoutManager, let container = view.textContainer else { return 200 }
+        manager.ensureLayout(for: container)
+        return ceil(manager.usedRect(for: container).height) + 4
+    }
+
+    static func showAbout(credits: NSAttributedString) {
+        if let existing = about { existing.makeKeyAndOrderFront(nil); return }
+
+        let width: CGFloat = 460
+        let text = linkedText(credits, width: width)
+        let textHeight = fittedHeight(text, width: width)
+        text.frame = NSRect(x: 0, y: 0, width: width, height: textHeight)
+        text.translatesAutoresizingMaskIntoConstraints = false
+        text.heightAnchor.constraint(equalToConstant: textHeight).isActive = true
+
+        let icon = NSImageView(image: NSApp.applicationIconImage)
+        icon.imageScaling = .scaleProportionallyUpOrDown
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.widthAnchor.constraint(equalToConstant: 84).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 84).isActive = true
+
+        let name = NSTextField(labelWithString: "Live Clip Envelopes")
+        name.font = .boldSystemFont(ofSize: 19)
+        name.alignment = .center
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
+        let versionLabel = NSTextField(labelWithString: "Version \(version) (\(build))")
+        versionLabel.font = .systemFont(ofSize: 11)
+        versionLabel.textColor = .secondaryLabelColor
+        versionLabel.alignment = .center
+
+        let stack = NSStackView(views: [icon, name, versionLabel, text])
+        stack.orientation = .vertical
+        stack.alignment = .centerX
+        stack.spacing = 8
+        stack.edgeInsets = NSEdgeInsets(top: 20, left: 22, bottom: 20, right: 22)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        text.widthAnchor.constraint(equalToConstant: width).isActive = true
+
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: width + 44, height: 100),
+                              styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        window.title = "About Live Clip Envelopes"
+        window.isReleasedWhenClosed = false
+        let root = NSView()
+        root.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: root.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: root.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: root.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: root.bottomAnchor),
+        ])
+        window.contentView = root
+        stack.layoutSubtreeIfNeeded()
+        window.setContentSize(NSSize(width: width + 44, height: stack.fittingSize.height))
+        window.center()
+        about = window
+        NSApp.activate()
+        window.makeKeyAndOrderFront(nil)
+    }
+
+    /// The README that ships in Contents/Resources — no network, no browser.
+    static func showHelp() {
+        if let existing = help { existing.makeKeyAndOrderFront(nil); return }
+
+        let bundled = Bundle.main.url(forResource: "README", withExtension: "md")
+        let body = bundled.flatMap { try? String(contentsOf: $0, encoding: .utf8) }
+            ?? "README.md is missing from this build.\n\nOnline: \(HELP_URL)"
+
+        let view = NSTextView()
+        view.isEditable = false
+        view.isSelectable = true
+        view.font = .monospacedSystemFont(ofSize: 11.5, weight: .regular)
+        view.textColor = .labelColor
+        view.backgroundColor = .textBackgroundColor
+        view.string = body
+        view.textContainerInset = NSSize(width: 14, height: 14)
+
+        let scroll = NSScrollView()
+        scroll.hasVerticalScroller = true
+        scroll.autohidesScrollers = false
+        scroll.documentView = view
+
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 780),
+                              styleMask: [.titled, .closable, .resizable, .miniaturizable],
+                              backing: .buffered, defer: false)
+        window.title = "Live Clip Envelopes Help"
+        window.isReleasedWhenClosed = false
+        window.contentView = scroll
+        window.center()
+        help = window
+        NSApp.activate()
+        window.makeKeyAndOrderFront(nil)
+    }
+}
+
 final class MenuActions: NSObject {
     @objc func openURL(_ sender: NSMenuItem) {
         guard let string = sender.representedObject as? String,
@@ -929,11 +1061,8 @@ final class MenuActions: NSObject {
 
     @objc func showAbout(_ sender: Any?) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
-        NSApp.orderFrontStandardAboutPanel(options: [
-            .applicationName: "Live Clip Envelopes",
-            .applicationVersion: version,
-            .credits: aboutCredits(),
-        ])
+        _ = version
+        InfoWindows.showAbout(credits: aboutCredits())
     }
 
     //--------------------------------------------------------------------------------
@@ -947,7 +1076,14 @@ final class MenuActions: NSObject {
         let text = NSMutableAttributedString()
 
         func add(_ string: String, font: NSFont = NSFont.systemFont(ofSize: 11)) {
-            text.append(NSAttributedString(string: string, attributes: [.font: font]))
+            //--------------------------------------------------------------------------------
+            // labelColor, not the implicit default: an attributed string with no colour draws
+            // black, which is unreadable on the dark window in dark mode.
+            //--------------------------------------------------------------------------------
+            text.append(NSAttributedString(string: string, attributes: [
+                .font: font,
+                .foregroundColor: NSColor.labelColor,
+            ]))
         }
 
         func addLink(_ label: String, _ urlString: String) {
@@ -955,6 +1091,7 @@ final class MenuActions: NSObject {
             text.append(NSAttributedString(string: label, attributes: [
                 .font: body,
                 .link: url,
+                .foregroundColor: NSColor.linkColor,
                 .underlineStyle: NSUnderlineStyle.single.rawValue,
             ]))
         }
@@ -986,7 +1123,7 @@ final class MenuActions: NSObject {
 
         add("Help & contact\n", font: bold)
         addLinkRow([
-            ("Documentation", HELP_URL),
+            ("Documentation (also under Help ▸ in this app)", HELP_URL),
             ("Report an issue", HELP_URL + "/issues"),
             ("Email Esa", "mailto:" + CONTACT_EMAIL),
         ])
@@ -997,6 +1134,8 @@ final class MenuActions: NSObject {
     @objc func checkPermission(_ sender: Any?) {
         panelController?.showAccessibilityAlert()
     }
+
+    @objc func showHelp(_ sender: Any?) { InfoWindows.showHelp() }
 
     @objc func checkSetup(_ sender: Any?) {
         panelController?.showSetupReport()
@@ -1051,7 +1190,11 @@ func buildActionMenu() -> NSMenu {
 
     let help = NSMenuItem(title: "Help", action: nil, keyEquivalent: "")
     let helpSub = NSMenu()
-    helpSub.addItem(link("Live Clip Envelopes Help (README)", HELP_URL))
+    let localHelp = NSMenuItem(title: "Live Clip Envelopes Help",
+                               action: #selector(MenuActions.showHelp(_:)), keyEquivalent: "?")
+    localHelp.target = menuActions
+    helpSub.addItem(localHelp)
+    helpSub.addItem(link("Documentation on GitHub", HELP_URL))
     helpSub.addItem(link("Report an Issue", HELP_URL + "/issues"))
     helpSub.addItem(.separator())
     helpSub.addItem(link("AbletonOSC (required)", "https://github.com/ideoforms/AbletonOSC"))
@@ -1114,7 +1257,11 @@ func buildMainMenu() -> NSMenu {
     // --- Help -------------------------------------------------------------------
     let helpItem = NSMenuItem()
     let helpMenu = NSMenu(title: "Help")
-    helpMenu.addItem(item("Live Clip Envelopes Help (README)", HELP_URL))
+    let localHelpItem = NSMenuItem(title: "Live Clip Envelopes Help",
+                                   action: #selector(MenuActions.showHelp(_:)), keyEquivalent: "?")
+    localHelpItem.target = menuActions
+    helpMenu.addItem(localHelpItem)
+    helpMenu.addItem(item("Documentation on GitHub", HELP_URL))
     helpMenu.addItem(item("Report an Issue", HELP_URL + "/issues"))
     helpMenu.addItem(.separator())
     helpMenu.addItem(item("AbletonOSC (required)", "https://github.com/ideoforms/AbletonOSC"))

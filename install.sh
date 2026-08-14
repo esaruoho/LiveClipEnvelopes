@@ -68,6 +68,8 @@ rm -rf "$APP_DEST"
 mkdir -p "$APP_DEST/Contents/MacOS" "$APP_DEST/Contents/Resources"
 swiftc -O -o "$APP_DEST/Contents/MacOS/LiveEnvelopePanel" LiveEnvelopePanel/main.swift
 cp LiveEnvelopePanel/AppIcon.icns "$APP_DEST/Contents/Resources/AppIcon.icns"
+# Help reads this from inside the bundle, so it works with no network.
+cp README.md "$APP_DEST/Contents/Resources/README.md"
 
 # Embed the CLI so it is signed with the app and covered by the app's permission.
 cp "$TMP_CLI" "$APP_DEST/Contents/MacOS/live-envelope"

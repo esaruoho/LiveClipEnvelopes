@@ -23,6 +23,8 @@ APP="$STAGE/$NAME/Live Envelopes.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 swiftc -O -o "$APP/Contents/MacOS/LiveEnvelopePanel" LiveEnvelopePanel/main.swift
 cp LiveEnvelopePanel/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+# Help reads this from inside the bundle, so it works with no network.
+cp README.md "$APP/Contents/Resources/README.md"
 sed -e "s/<string>1.0<\/string>/<string>${VERSION}<\/string>/" > "$APP/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
