@@ -127,6 +127,25 @@ enum Accessibility {
     }
 }
 
+/// Blocking variant, used only by the setup report where the answer is the whole point.
+func runLiveEnvelopeSync(_ args: [String], timeout: TimeInterval = 4.0) -> String {
+    guard let binary = liveEnvelopeBinary() else { return "live-envelope not found" }
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: binary)
+    process.arguments = args
+    let pipe = Pipe()
+    process.standardOutput = pipe
+    process.standardError = pipe
+    do { try process.run() } catch { return "could not run live-envelope" }
+    let deadline = Date().addingTimeInterval(timeout)
+    while process.isRunning && Date() < deadline { usleep(50_000) }
+    if process.isRunning { process.terminate(); return "timed out" }
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    return (String(data: data, encoding: .utf8) ?? "")
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+        .components(separatedBy: "\n").first ?? ""
+}
+
 func runLiveEnvelope(_ args: [String], completion: @escaping (String, Bool) -> Void) {
     guard let binary = liveEnvelopeBinary() else {
         DispatchQueue.main.async {
@@ -375,6 +394,11 @@ final class PanelController: NSObject, NSWindowDelegate {
 
         let alert = NSAlert()
         var problems: [String] = []
+        //--------------------------------------------------------------------------------
+        // Filesystem checks prove the files are right; only a round-trip proves Live
+        // actually loaded the script and the Control Surface is selected.
+        //--------------------------------------------------------------------------------
+        let probe = runLiveEnvelopeSync(["abletonosc", "probe"])
         if !trusted { problems.append("Accessibility permission") }
         if binary == nil { problems.append("live-envelope binary") }
         if !osc.isOK { problems.append("AbletonOSC") }
@@ -389,17 +413,30 @@ final class PanelController: NSObject, NSWindowDelegate {
             \(mark(osc.isOK)) \(osc.summary)
                 \(AbletonOSC.scriptDirectory)
             \(mark(liveRunning)) Ableton Live \(liveRunning ? "running" : "not running")
+            \(mark(probe.hasPrefix("responding"))) Control Surface: \(probe.isEmpty ? "could not probe" : probe)
 
             AbletonOSC must be installed there AND carry this project's patch, otherwise \
             transposition and revealing the Envelopes box silently do nothing — the OSC \
             messages are one-way, so nothing reports the failure.
             """
         alert.addButton(withTitle: "OK")
-        if !osc.isOK { alert.addButton(withTitle: "AbletonOSC Setup Help") }
-        alert.beginSheetModal(for: panel) { response in
-            if response == .alertSecondButtonReturn,
-               let url = URL(string: HELP_URL + "#abletonosc-setup") {
-                NSWorkspace.shared.open(url)
+        alert.addButton(withTitle: "Show Me in Live")
+        alert.addButton(withTitle: "Enable It for Me")
+        if !osc.isOK { alert.addButton(withTitle: "Setup Help") }
+        alert.beginSheetModal(for: panel) { [weak self] response in
+            switch response {
+            case .alertSecondButtonReturn:
+                //--------------------------------------------------------------------------------
+                // Opens Live's Settings on the Tempo & MIDI tab and names the slot to change,
+                // without touching the configuration -- the user makes the change.
+                //--------------------------------------------------------------------------------
+                self?.perform(["abletonosc", "guide"])
+            case .alertThirdButtonReturn:
+                self?.perform(["abletonosc", "enable"])
+            default:
+                if !osc.isOK, let url = URL(string: HELP_URL + "#abletonosc-setup") {
+                    NSWorkspace.shared.open(url)
+                }
             }
         }
     }

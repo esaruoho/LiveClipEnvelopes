@@ -56,8 +56,8 @@ transposition still works.
 - Download it: [AbletonOSC](https://github.com/ideoforms/AbletonOSC) → **Code ▸ Download ZIP**
 - Put the folder, named exactly `AbletonOSC`, at `~/Music/Ableton/User Library/Remote Scripts/AbletonOSC`
 - Copy the included `abletonosc-patch/view.py` over `AbletonOSC/abletonosc/view.py` — it adds the four endpoints this uses
-- In Live: **Settings ▸ Link, Tempo & MIDI ▸ Control Surface ▸ AbletonOSC**
-- Restart Live (Remote Scripts load at launch)
+- Restart Live (Remote Scripts load at launch — it will not appear before that)
+- Then let the app finish it: **⋯ ▸ Check Setup… ▸ Show Me in Live** opens Live's Settings on the right tab and names the slot, or **Enable It for Me** sets it and verifies it by round-trip
 
 **4 · Confirm.** In the app, **⋯ ▸ Check Setup…** reports permission, the AbletonOSC patch
 and whether Live is running — each with a tick or a fix. Use it before a session rather than

@@ -262,6 +262,9 @@ usage: live-envelope <command>
   link | unlink | toggle-link             Link/Unlink the displayed envelope
   open                                    pop the chooser menu open
   open-at-mouse                           ... and move it under the pointer
+  abletonosc probe                        is AbletonOSC loaded and answering?
+  abletonosc guide                        open Live's Settings at the right slot
+  abletonosc enable                       ...and select AbletonOSC in it
   status                                  print the current chooser state
   list                                    list every entry the chooser offers
 """
@@ -324,6 +327,207 @@ func locate(role wantedRole: String, description: String) -> AXUIElement? {
 // Gain?" would see stale leftover state and toggle away from an envelope the user
 // was never actually looking at.
 //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// AbletonOSC onboarding.
+//
+// Installing the files is not enough: Live enumerates Remote Scripts only at launch,
+// and the script still has to be picked in Settings. That last step IS reachable --
+// Live exposes each slot as an AXPopUpButton described "Remote Script <n> Type"
+// (the UI calls it "Control Surface"), the same kind of popup the envelope chooser
+// uses. So rather than describing where to click, we can put the user in front of it,
+// or set it outright.
+//
+// These commands run before the Envelopes-box logic on purpose: they must work with
+// no clip selected and no Clip View open.
+//--------------------------------------------------------------------------------
+let SLOT_PREFIX = "Remote Script "
+let SLOT_SUFFIX = " Type"
+
+func settingsWindow() -> AXUIElement? {
+    windows(of: application).first { string($0, kAXTitleAttribute as String) == "Settings" }
+}
+
+/// Presses the app menu's "Settings…" item. Preferred over synthesising Cmd-, because
+/// it does not depend on the keyboard layout or on who currently has key focus.
+func openSettingsWindow() -> AXUIElement? {
+    if let already = settingsWindow() { return already }
+    guard let barValue = attribute(application, "AXMenuBar") else { return nil }
+    let bar = barValue as! AXUIElement
+    for menu in children(bar) {
+        for submenu in children(menu) {
+            for item in children(submenu) where string(item, kAXTitleAttribute as String).hasPrefix("Settings") {
+                AXUIElementPerformAction(item, kAXPressAction as CFString)
+                for _ in 0..<20 {
+                    usleep(150_000)
+                    if let window = settingsWindow() { return window }
+                }
+                return nil
+            }
+        }
+    }
+    return nil
+}
+
+func descendants(_ element: AXUIElement, role wanted: String, depth: Int = 0) -> [AXUIElement] {
+    guard depth < 12 else { return [] }
+    var found: [AXUIElement] = []
+    if role(element) == wanted { found.append(element) }
+    for child in children(element) { found += descendants(child, role: wanted, depth: depth + 1) }
+    return found
+}
+
+/// The Remote Script slots live on the Tempo & MIDI tab; the tab has to be showing
+/// before its popups exist in the tree.
+func showMidiTab(in window: AXUIElement) {
+    for wanted in ["AXRadioButton", "AXButton"] {
+        if let tab = descendants(window, role: wanted).first(where: {
+            string($0, kAXDescriptionAttribute as String).localizedCaseInsensitiveContains("MIDI")
+        }) {
+            AXUIElementPerformAction(tab, kAXPressAction as CFString)
+            usleep(900_000)
+            return
+        }
+    }
+}
+
+struct RemoteSlot {
+    let number: Int
+    let popup: AXUIElement
+    let value: String
+}
+
+func remoteSlots(in window: AXUIElement) -> [RemoteSlot] {
+    descendants(window, role: "AXPopUpButton").compactMap { popup in
+        let description = string(popup, kAXDescriptionAttribute as String)
+        guard description.hasPrefix(SLOT_PREFIX), description.hasSuffix(SLOT_SUFFIX) else { return nil }
+        let middle = description.dropFirst(SLOT_PREFIX.count).dropLast(SLOT_SUFFIX.count)
+        guard let number = Int(middle) else { return nil }
+        return RemoteSlot(number: number, popup: popup, value: string(popup, kAXValueAttribute as String))
+    }
+    .sorted { $0.number < $1.number }
+}
+
+/// Round-trips /live/test and waits briefly for a reply on 11001. This is the only
+/// check that proves AbletonOSC is actually loaded AND listening, and unlike reading
+/// the Settings popups it disturbs nothing on screen.
+func abletonOSCResponds(timeout: TimeInterval = 1.0) -> Bool? {
+    let socketDescriptor = socket(AF_INET, SOCK_DGRAM, 0)
+    guard socketDescriptor >= 0 else { return nil }
+    defer { close(socketDescriptor) }
+
+    var local = sockaddr_in()
+    local.sin_family = sa_family_t(AF_INET)
+    local.sin_port = UInt16(11001).bigEndian
+    local.sin_addr.s_addr = inet_addr("127.0.0.1")
+    let bound = withUnsafePointer(to: &local) { pointer in
+        pointer.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+            bind(socketDescriptor, $0, socklen_t(MemoryLayout<sockaddr_in>.size))
+        }
+    }
+    // Someone else already listening on 11001 (a debug tool, another client) means we
+    // cannot tell -- say "unknown" rather than "broken".
+    guard bound == 0 else { return nil }
+
+    var timeval_ = timeval(tv_sec: Int(timeout), tv_usec: Int32((timeout - Double(Int(timeout))) * 1_000_000))
+    setsockopt(socketDescriptor, SOL_SOCKET, SO_RCVTIMEO, &timeval_, socklen_t(MemoryLayout<timeval>.size))
+
+    sendOSC("/live/test")
+
+    var buffer = [UInt8](repeating: 0, count: 2048)
+    let received = recv(socketDescriptor, &buffer, buffer.count, 0)
+    return received > 0
+}
+
+func reportSlots(_ slots: [RemoteSlot]) {
+    for slot in slots where !slot.value.isEmpty {
+        let marker = slot.value == "AbletonOSC" ? " <- AbletonOSC is here" : ""
+        print("  Remote Script \(slot.number): \(slot.value)\(marker)")
+    }
+}
+
+switch command {
+case "abletonosc probe", "abletonosc-probe":
+    switch abletonOSCResponds() {
+    case .some(true):  print("responding")
+    case .some(false): print("not responding -- AbletonOSC is not loaded, or not selected in Settings")
+    case .none:        print("unknown -- port 11001 is already in use by another OSC client")
+    }
+    exit(0)
+
+case "abletonosc guide", "abletonosc-guide", "abletonosc enable", "abletonosc-enable":
+    let shouldEnable = command.contains("enable")
+    //--------------------------------------------------------------------------------
+    // If it already answers, there is nothing to guide anyone to -- say so and leave
+    // the screen alone rather than throwing Settings in their face.
+    //--------------------------------------------------------------------------------
+    if abletonOSCResponds() == true {
+        print("already enabled and responding -- nothing to do")
+        exit(0)
+    }
+    live.activate()
+    usleep(400_000)
+    guard let window = openSettingsWindow() else {
+        fail("could not open Live's Settings window")
+    }
+    showMidiTab(in: window)
+    var slots = remoteSlots(in: window)
+    guard !slots.isEmpty else {
+        fail("opened Settings but found no Remote Script slots -- is the Tempo & MIDI tab showing?")
+    }
+
+    if let existing = slots.first(where: { $0.value == "AbletonOSC" }) {
+        print("already enabled in Remote Script \(existing.number)")
+        reportSlots(slots)
+        exit(0)
+    }
+
+    guard let free = slots.first(where: { $0.value == "None" }) else {
+        reportSlots(slots)
+        fail("every Remote Script slot is taken -- free one up, then try again")
+    }
+
+    if !shouldEnable {
+        //--------------------------------------------------------------------------------
+        // Guide, not do: Settings is open on the right tab with the slot identified, and
+        // the user makes the change. Deliberately does not touch their configuration.
+        //--------------------------------------------------------------------------------
+        print("set \"Control Surface\" slot \(free.number) to AbletonOSC")
+        reportSlots(slots)
+        exit(0)
+    }
+
+    //--------------------------------------------------------------------------------
+    // AbletonOSC only appears in this menu if the files were in place when Live
+    // launched, so a missing entry means "install, then restart Live" -- not a failure
+    // of the popup.
+    //--------------------------------------------------------------------------------
+    guard let menu = openMenu(free.popup, in: application) else {
+        fail("could not open the Control Surface menu for slot \(free.number)")
+    }
+    let available = entries(of: menu)
+    guard let match = available.first(where: { $0.title == "AbletonOSC" }) else {
+        closeMenu(menu)
+        fail("AbletonOSC is not in Live's Control Surface list. Install it into "
+             + "~/Music/Ableton/User Library/Remote Scripts/AbletonOSC and RESTART Live -- "
+             + "Live only reads that folder at launch.")
+    }
+    guard AXUIElementPerformAction(match.element, kAXPressAction as CFString) == .success else {
+        closeMenu(menu)
+        fail("could not select AbletonOSC in slot \(free.number)")
+    }
+    usleep(1_200_000)
+    print("enabled in Remote Script \(free.number)")
+    switch abletonOSCResponds(timeout: 2.0) {
+    case .some(true):  print("verified: AbletonOSC is responding on port 11000")
+    case .some(false): print("selected, but not responding yet -- give Live a moment, or restart it")
+    case .none:        print("selected; could not verify (port 11001 busy)")
+    }
+    exit(0)
+
+default:
+    break
+}
+
 let wasAlreadyVisible = locate(role: "AXPopUpButton", description: "Control Chooser") != nil
 
 //--------------------------------------------------------------------------------

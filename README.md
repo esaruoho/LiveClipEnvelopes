@@ -225,8 +225,24 @@ The endpoints added are `/live/view/show_clip_envelope`, `/live/view/hide_clip_e
 
 ### 4. Turn it on in Live
 
-**Live ▸ Settings ▸ Link, Tempo & MIDI ▸ Control Surface**, pick **AbletonOSC**. Input and
-Output can stay `None` — it listens on UDP, not MIDI.
+**The app can do this part for you.** In Live Clip Envelopes: **⋯ ▸ Check Setup…** then either
+
+- **Show Me in Live** — opens Live's Settings on the Tempo & MIDI tab and names the exact
+  Control Surface slot to change, without touching your configuration; or
+- **Enable It for Me** — selects AbletonOSC in the first free slot and then verifies it by
+  round-tripping an OSC message, so you get a yes/no rather than a hopeful message.
+
+By hand it is **Live ▸ Settings ▸ Link, Tempo & MIDI ▸ Control Surface**, pick **AbletonOSC**.
+Input and Output can stay `None` — it listens on UDP, not MIDI.
+
+From the command line the same three things are:
+
+    live-envelope abletonosc probe     is it loaded and answering?
+    live-envelope abletonosc guide     open Settings at the right slot, change nothing
+    live-envelope abletonosc enable    select it, then verify by round-trip
+
+Live exposes each Control Surface slot to Accessibility as `Remote Script <n> Type`, which is
+how this works at all — the same kind of control the envelope chooser is.
 
 ### 5. Restart Live
 
