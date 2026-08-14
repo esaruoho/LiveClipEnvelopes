@@ -23,8 +23,7 @@ time. This puts it back on a single keypress.
 ## Requirements
 
 - macOS, Ableton Live 12 (built against 12.4)
-- [AbletonOSC](https://github.com/ideoforms/AbletonOSC) (free, one-time setup — walked
-  through below and inside the app)
+- [AbletonOSC](https://github.com/ideoforms/AbletonOSC) — free, one-time setup, walked through below and inside the app
 - Accessibility permission, granted once, because it drives Live's own interface
 
 ## Setup, start to finish
@@ -36,9 +35,7 @@ The zip contains a prebuilt, code-signed app. No compiler, no Terminal, no admin
 macOS blocks it the first time — the app is signed but not notarized (that needs a paid
 Apple developer account). **One line in Terminal fixes it for good:**
 
-```sh
-xattr -dr com.apple.quarantine "/Applications/Live Envelopes.app"
-```
+`xattr -dr com.apple.quarantine "/Applications/Live Envelopes.app"`
 
 That removes the "downloaded from the internet" flag; Gatekeeper only blocks flagged files,
 so the app then opens on a normal double-click. No system setting is changed.
@@ -57,10 +54,8 @@ for you. *Envelope switching works without it* — so if you skip this, everythi
 transposition still works.
 
 - Download it: [AbletonOSC](https://github.com/ideoforms/AbletonOSC) → **Code ▸ Download ZIP**
-- Put the folder, named exactly `AbletonOSC`, at
-  `~/Music/Ableton/User Library/Remote Scripts/AbletonOSC`
-- Copy the included `abletonosc-patch/view.py` over
-  `AbletonOSC/abletonosc/view.py` — it adds the four endpoints this uses
+- Put the folder, named exactly `AbletonOSC`, at `~/Music/Ableton/User Library/Remote Scripts/AbletonOSC`
+- Copy the included `abletonosc-patch/view.py` over `AbletonOSC/abletonosc/view.py` — it adds the four endpoints this uses
 - In Live: **Settings ▸ Link, Tempo & MIDI ▸ Control Surface ▸ AbletonOSC**
 - Restart Live (Remote Scripts load at launch)
 
